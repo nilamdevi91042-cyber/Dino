@@ -12,14 +12,11 @@ import android.view.SurfaceView
 /**
  * Landscape split-screen 2-player view.
  *
- * Two independent [GameEngine] instances share the same surface. Touch dispatch is
- * routed by the X coordinate of each pointer:
- *   - Pointer X < width/2  → Player 1 jump
- *   - Pointer X >= width/2 → Player 2 jump
- *
- * Each pointer is tracked individually via ACTION_POINTER_DOWN / ACTION_POINTER_UP so
- * a touch on one half NEVER triggers the other player. Both players can tap simultaneously
- * with no interference.
+ * Two independent [GameEngine] instances share the same surface. Each finger is
+ * **claimed** by whichever side it first touched, and only that side is affected by
+ * its lifetime — even if it later drifts across the divider. This guarantees
+ * Player 1 and Player 2 can tap simultaneously and one player's tap NEVER affects
+ * the other player's dino.
  */
 class MultiplayerGameView @JvmOverloads constructor(
     context: Context,
@@ -44,6 +41,12 @@ class MultiplayerGameView @JvmOverloads constructor(
     private var p1Name = "P1"
     private var p2Name = "P2"
 
+    /**
+     * Maps active pointerId -> the side it belongs to (1 = left/P1, 2 = right/P2).
+     * Recorded on DOWN, removed on UP, used to keep each finger isolated to its side.
+     */
+    private val pointerSide = HashMap<Int, Int>(8)
+
     private val divider = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.argb(150, 255, 255, 255)
         strokeWidth = 4f
@@ -62,6 +65,9 @@ class MultiplayerGameView @JvmOverloads constructor(
     private var lastP2Alive = true
 
     init {
+        // Make sure this view actually receives touches even though it sits beneath HUD chips.
+        isClickable = true
+        isFocusable = true
         holder.addCallback(this)
         val l: GameEngine.EngineListener = GameEngine.EngineListener { e ->
             when (e) {
@@ -84,6 +90,7 @@ class MultiplayerGameView @JvmOverloads constructor(
     fun restart() {
         engineP1.reset()
         engineP2.reset()
+        pointerSide.clear()
         lastP1Score = -1; lastP2Score = -1
         lastP1Alive = true; lastP2Alive = true
         ensureThreadRunning()
@@ -119,22 +126,34 @@ class MultiplayerGameView @JvmOverloads constructor(
     }
 
     /**
-     * Touch routing — every pointer is mapped to its half independently. Pointers in
-     * the left half only trigger Player 1; pointers in the right half only trigger
-     * Player 2. Simultaneous taps work because we look at the specific pointer index
-     * for ACTION_POINTER_DOWN events.
+     * Per-pointer touch routing. Each finger is assigned a side on DOWN and stays
+     * locked to that side until UP — so simultaneous taps register independently and
+     * one player can never trigger the other player's dino, even if their finger
+     * drifts across the divider.
      */
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        val action = event.actionMasked
-        when (action) {
+        if (width <= 0) return true
+        val half = width / 2f
+        when (event.actionMasked) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> {
                 val idx = event.actionIndex
+                val pid = event.getPointerId(idx)
                 val x = event.getX(idx)
-                if (x < width / 2f) {
+                val side = if (x < half) 1 else 2
+                pointerSide[pid] = side
+                if (side == 1) {
                     if (engineP1.alive) engineP1.jump()
                 } else {
                     if (engineP2.alive) engineP2.jump()
                 }
+            }
+            MotionEvent.ACTION_POINTER_UP, MotionEvent.ACTION_UP -> {
+                val idx = event.actionIndex
+                val pid = event.getPointerId(idx)
+                pointerSide.remove(pid)
+            }
+            MotionEvent.ACTION_CANCEL -> {
+                pointerSide.clear()
             }
         }
         return true

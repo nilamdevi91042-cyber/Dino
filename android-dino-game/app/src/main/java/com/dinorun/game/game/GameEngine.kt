@@ -1,7 +1,6 @@
 package com.dinorun.game.game
 
 import kotlin.math.max
-import kotlin.math.min
 import kotlin.random.Random
 
 /**
@@ -33,7 +32,7 @@ class GameEngine(var width: Float = 0f, var height: Float = 0f) {
     private var spawnCooldown: Float = 0f
     private var cloudCooldown: Float = 0f
     private var powerUpCooldown: Float = 5f
-    private var nextLevelThreshold = 500
+    private var nextLevelThreshold = 350
     private var rnd = Random.Default
     private var listener: EngineListener? = null
 
@@ -68,10 +67,10 @@ class GameEngine(var width: Float = 0f, var height: Float = 0f) {
         shieldActive = false
         isNight = false
         distance = 0f
-        spawnCooldown = 1.5f
+        spawnCooldown = 1.2f
         cloudCooldown = 0f
         powerUpCooldown = 8f
-        nextLevelThreshold = 500
+        nextLevelThreshold = 350
         dino.reset(groundY)
     }
 
@@ -87,28 +86,29 @@ class GameEngine(var width: Float = 0f, var height: Float = 0f) {
 
     fun update(dt: Float) {
         if (!alive) return
-        val baseSpeed = 360f + (level - 1) * 70f
-        val speed = baseSpeed
+        // Faster base, sharper acceleration per level so each level is noticeably quicker.
+        val speed = 440f + (level - 1) * 110f
         distance += speed * dt
         score = (distance / 8f).toInt()
 
-        // Level progression
+        // Level progression — promotes more often early so players see the speed-up sooner.
         if (score >= nextLevelThreshold) {
             level++
-            nextLevelThreshold += 500 + level * 250
+            nextLevelThreshold += 350 + level * 200
             isNight = level >= 4 && (level % 2 == 0)
             listener?.onEvent(Event.LevelUp(level))
         }
 
         dino.update(dt, groundY)
 
-        // Spawn obstacles
+        // Spawn obstacles — denser and even denser at higher levels.
         spawnCooldown -= dt
         if (spawnCooldown <= 0f) {
             val type = pickObstacleType()
             obstacles.add(Obstacle.create(type, width, groundY))
-            val minGap = max(0.55f, 1.3f - level * 0.08f)
-            val maxGap = max(1.0f, 2.1f - level * 0.1f)
+            // Tighter gaps so obstacles come at varied, closer distances.
+            val minGap = max(0.38f, 0.85f - level * 0.07f)
+            val maxGap = max(0.70f, 1.45f - level * 0.10f)
             spawnCooldown = rnd.nextFloat() * (maxGap - minGap) + minGap
         }
 
@@ -171,8 +171,8 @@ class GameEngine(var width: Float = 0f, var height: Float = 0f) {
         return when {
             level >= 3 && r < 0.20f -> Obstacle.Type.BIRD_HIGH
             level >= 3 && r < 0.32f -> Obstacle.Type.BIRD_LOW
-            r < 0.55f -> Obstacle.Type.CACTUS_SMALL
-            r < 0.85f -> Obstacle.Type.CACTUS_LARGE
+            r < 0.45f -> Obstacle.Type.CACTUS_SMALL
+            r < 0.78f -> Obstacle.Type.CACTUS_LARGE
             else -> Obstacle.Type.CACTUS_TRIPLE
         }
     }

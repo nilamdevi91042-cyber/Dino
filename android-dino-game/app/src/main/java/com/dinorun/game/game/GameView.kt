@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.Shader
 import android.util.AttributeSet
@@ -270,29 +271,187 @@ class GameRenderer {
 
     private fun drawDino(c: Canvas, engine: GameEngine, night: Boolean) {
         val d = engine.dino
-        dinoPaint.color = if (night) Color.parseColor("#E0E5FF") else Color.parseColor("#37474F")
         val b = d.bounds()
-        tmpRect.set(b[0], b[1], b[2], b[3])
-        c.drawRoundRect(tmpRect, 8f, 8f, dinoPaint)
-        // Eye
-        dinoPaint.color = if (night) Color.parseColor("#0E1230") else Color.WHITE
-        val eyeR = 3.5f
-        val eyeX = b[2] - 12f
-        val eyeY = b[1] + (if (d.ducking) 14f else 16f)
-        c.drawCircle(eyeX, eyeY, eyeR, dinoPaint)
-        // Legs animation
-        if (d.onGround && !d.ducking) {
-            dinoPaint.color = if (night) Color.parseColor("#E0E5FF") else Color.parseColor("#37474F")
-            val phase = kotlin.math.sin(d.legPhase.toDouble()).toFloat()
-            val legBase = b[3]
-            val legTop = legBase - 8f
-            val leftX = b[0] + 8f
-            val rightX = b[2] - 14f
-            tmpRect.set(leftX, legTop, leftX + 6f, legBase + 4f * phase)
-            c.drawRect(tmpRect, dinoPaint)
-            tmpRect.set(rightX, legTop, rightX + 6f, legBase - 4f * phase)
-            c.drawRect(tmpRect, dinoPaint)
+        val left = b[0]
+        val top = b[1]
+        val right = b[2]
+        val bottom = b[3]
+        val w = right - left
+        val h = bottom - top
+
+        val bodyColor = if (night) Color.parseColor("#F4D8B6") else Color.parseColor("#A0522D")
+        val bellyColor = if (night) Color.parseColor("#FFF1DE") else Color.parseColor("#D8B48A")
+        val accentColor = if (night) Color.parseColor("#5B3A20") else Color.parseColor("#3E2210")
+        val noseColor = Color.parseColor("#1A1A1A")
+
+        if (d.ducking) {
+            drawDuckingDog(c, left, top, right, bottom, w, h, bodyColor, bellyColor, accentColor, noseColor)
+        } else {
+            drawRunningDog(c, d, left, top, right, bottom, w, h, bodyColor, bellyColor, accentColor, noseColor)
         }
+    }
+
+    /**
+     * Draws a side-view dog: 4 legs (animated), oval body, round head, snout, ear, tail.
+     */
+    private fun drawRunningDog(
+        c: Canvas, d: Dino,
+        left: Float, top: Float, right: Float, bottom: Float, w: Float, h: Float,
+        body: Int, belly: Int, accent: Int, nose: Int,
+    ) {
+        // Reserve top space for head & ear so the body fits in the lower portion.
+        val bodyTop = top + h * 0.38f
+        val bodyBottom = bottom - h * 0.18f
+        val bodyLeft = left + w * 0.05f
+        val bodyRight = right - w * 0.18f
+
+        // Tail (wagging in sync with legs)
+        val phase = kotlin.math.sin(d.legPhase.toDouble()).toFloat()
+        dinoPaint.color = body
+        dinoPaint.style = Paint.Style.FILL
+        val tailBaseX = bodyLeft + 4f
+        val tailBaseY = bodyTop + (bodyBottom - bodyTop) * 0.35f
+        val tailTipX = left - 6f
+        val tailTipY = tailBaseY - 14f + 8f * phase
+        val tailPath = Path().apply {
+            moveTo(tailBaseX, tailBaseY - 4f)
+            quadTo(tailTipX - 6f, tailTipY + 6f, tailTipX, tailTipY)
+            quadTo(tailTipX - 4f, tailTipY + 10f, tailBaseX, tailBaseY + 4f)
+            close()
+        }
+        c.drawPath(tailPath, dinoPaint)
+
+        // Body (oval)
+        dinoPaint.color = body
+        tmpRect.set(bodyLeft, bodyTop, bodyRight, bodyBottom)
+        c.drawOval(tmpRect, dinoPaint)
+        // Belly highlight
+        dinoPaint.color = belly
+        val bellyTop = bodyTop + (bodyBottom - bodyTop) * 0.55f
+        tmpRect.set(bodyLeft + w * 0.10f, bellyTop, bodyRight - w * 0.05f, bodyBottom)
+        c.drawOval(tmpRect, dinoPaint)
+
+        // Head (circle near front-right of body)
+        dinoPaint.color = body
+        val headR = h * 0.30f
+        val headCx = bodyRight + headR * 0.15f
+        val headCy = bodyTop + headR * 0.05f
+        c.drawCircle(headCx, headCy, headR, dinoPaint)
+
+        // Snout (small rounded rect sticking out forward)
+        val snoutW = headR * 0.95f
+        val snoutH = headR * 0.55f
+        val snoutLeft = headCx + headR * 0.45f
+        val snoutTop = headCy + headR * 0.10f
+        tmpRect.set(snoutLeft, snoutTop, snoutLeft + snoutW, snoutTop + snoutH)
+        c.drawRoundRect(tmpRect, 6f, 6f, dinoPaint)
+
+        // Nose
+        dinoPaint.color = nose
+        c.drawCircle(snoutLeft + snoutW - 3f, snoutTop + snoutH * 0.45f, 3.4f, dinoPaint)
+
+        // Mouth line
+        dinoPaint.color = accent
+        dinoPaint.style = Paint.Style.STROKE
+        dinoPaint.strokeWidth = 1.5f
+        c.drawLine(snoutLeft + 4f, snoutTop + snoutH - 3f, snoutLeft + snoutW - 6f, snoutTop + snoutH - 3f, dinoPaint)
+        dinoPaint.style = Paint.Style.FILL
+
+        // Ear (floppy triangle)
+        dinoPaint.color = accent
+        val earPath = Path().apply {
+            moveTo(headCx - headR * 0.55f, headCy - headR * 0.55f)
+            lineTo(headCx + headR * 0.10f, headCy - headR * 1.15f)
+            lineTo(headCx + headR * 0.20f, headCy - headR * 0.10f)
+            close()
+        }
+        c.drawPath(earPath, dinoPaint)
+
+        // Eye
+        dinoPaint.color = Color.WHITE
+        val eyeCx = headCx + headR * 0.30f
+        val eyeCy = headCy - headR * 0.05f
+        c.drawCircle(eyeCx, eyeCy, 3.5f, dinoPaint)
+        dinoPaint.color = nose
+        c.drawCircle(eyeCx + 0.8f, eyeCy, 2.0f, dinoPaint)
+
+        // Collar
+        dinoPaint.color = Color.parseColor("#E53935")
+        val collarLeft = headCx - headR * 0.40f
+        val collarRight = headCx + headR * 0.55f
+        val collarTop = headCy + headR * 0.55f
+        tmpRect.set(collarLeft, collarTop, collarRight, collarTop + 5f)
+        c.drawRoundRect(tmpRect, 2f, 2f, dinoPaint)
+
+        // Four animated legs (front pair vs back pair alternate)
+        dinoPaint.color = accent
+        val legW = 6f
+        val legBaseY = bottom
+        val legTopY = bodyBottom - 4f
+        val frontPhase = phase
+        val backPhase = -phase
+        val backLegX1 = bodyLeft + w * 0.08f
+        val backLegX2 = bodyLeft + w * 0.22f
+        val frontLegX1 = bodyRight - w * 0.30f
+        val frontLegX2 = bodyRight - w * 0.15f
+        // Back legs
+        drawLeg(c, backLegX1, legTopY, legBaseY + 4f * backPhase, legW)
+        drawLeg(c, backLegX2, legTopY, legBaseY - 4f * backPhase, legW)
+        // Front legs
+        drawLeg(c, frontLegX1, legTopY, legBaseY + 4f * frontPhase, legW)
+        drawLeg(c, frontLegX2, legTopY, legBaseY - 4f * frontPhase, legW)
+    }
+
+    private fun drawDuckingDog(
+        c: Canvas,
+        left: Float, top: Float, right: Float, bottom: Float, w: Float, h: Float,
+        body: Int, belly: Int, accent: Int, nose: Int,
+    ) {
+        // Long, low body
+        dinoPaint.color = body
+        dinoPaint.style = Paint.Style.FILL
+        val bodyTop = top + h * 0.20f
+        tmpRect.set(left, bodyTop, right - w * 0.10f, bottom - 4f)
+        c.drawOval(tmpRect, dinoPaint)
+        // Belly
+        dinoPaint.color = belly
+        tmpRect.set(left + w * 0.10f, bodyTop + h * 0.40f, right - w * 0.18f, bottom - 4f)
+        c.drawOval(tmpRect, dinoPaint)
+        // Head & snout extended forward
+        dinoPaint.color = body
+        val headR = h * 0.45f
+        val headCx = right - w * 0.18f
+        val headCy = bodyTop + headR * 0.30f
+        c.drawCircle(headCx, headCy, headR, dinoPaint)
+        val snoutW = headR * 1.05f
+        tmpRect.set(headCx + headR * 0.40f, headCy, headCx + headR * 0.40f + snoutW, headCy + headR * 0.55f)
+        c.drawRoundRect(tmpRect, 6f, 6f, dinoPaint)
+        // Nose
+        dinoPaint.color = nose
+        c.drawCircle(headCx + headR * 0.40f + snoutW - 3f, headCy + headR * 0.30f, 3.4f, dinoPaint)
+        // Ear back
+        dinoPaint.color = accent
+        val earPath = Path().apply {
+            moveTo(headCx - headR * 0.50f, headCy - headR * 0.30f)
+            lineTo(headCx - headR * 0.10f, headCy - headR * 0.95f)
+            lineTo(headCx + headR * 0.15f, headCy - headR * 0.20f)
+            close()
+        }
+        c.drawPath(earPath, dinoPaint)
+        // Eye
+        dinoPaint.color = Color.WHITE
+        c.drawCircle(headCx + headR * 0.30f, headCy + 2f, 3f, dinoPaint)
+        dinoPaint.color = nose
+        c.drawCircle(headCx + headR * 0.30f + 0.8f, headCy + 2f, 1.7f, dinoPaint)
+        // Short stub legs
+        dinoPaint.color = accent
+        drawLeg(c, left + w * 0.15f, bottom - 6f, bottom, 6f)
+        drawLeg(c, right - w * 0.40f, bottom - 6f, bottom, 6f)
+    }
+
+    private fun drawLeg(c: Canvas, x: Float, top: Float, bottom: Float, width: Float) {
+        tmpRect.set(x, top, x + width, bottom)
+        c.drawRoundRect(tmpRect, 2f, 2f, dinoPaint)
     }
 
     private fun drawCactus(c: Canvas, o: Obstacle, night: Boolean) {

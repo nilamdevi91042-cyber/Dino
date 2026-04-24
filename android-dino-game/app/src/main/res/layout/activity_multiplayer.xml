@@ -19,7 +19,11 @@
         android:background="@drawable/score_chip_bg"
         android:paddingHorizontal="14dp"
         android:paddingVertical="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clickable="false"
+        android:focusable="false"
+        android:duplicateParentState="false"
+        android:importantForAccessibility="no">
         <TextView
             android:id="@+id/tvP1Name"
             android:layout_width="wrap_content"
@@ -57,7 +61,11 @@
         android:paddingHorizontal="14dp"
         android:paddingVertical="8dp"
         android:orientation="vertical"
-        android:gravity="end">
+        android:gravity="end"
+        android:clickable="false"
+        android:focusable="false"
+        android:duplicateParentState="false"
+        android:importantForAccessibility="no">
         <TextView
             android:id="@+id/tvP2Name"
             android:layout_width="wrap_content"
