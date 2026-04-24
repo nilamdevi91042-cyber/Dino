@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <com.dinorun.game.game.GameView
+        android:id="@+id/gameView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Top HUD -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/score_chip_bg"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="8dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvPlayer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFFFF"
+                android:textSize="11sp"
+                android:textAllCaps="true" />
+            <TextView
+                android:id="@+id/tvScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00000"
+                android:textColor="#FFFFFFFF"
+                android:textStyle="bold"
+                android:textSize="22sp"
+                android:fontFeatureSettings="tnum" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tvHi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/score_chip_bg"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:text="HI 00000"
+            android:textColor="#FFE0B2"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/score_chip_bg"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:text="LV 1"
+            android:textColor="#90CAF9"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnPause"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/score_chip_bg"
+            android:src="@drawable/ic_pause"
+            android:contentDescription="@string/paused" />
+    </LinearLayout>
+
+    <!-- Shield indicator -->
+    <TextView
+        android:id="@+id/tvShield"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/shield_chip_bg"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="8dp"
+        android:text="@string/shield_active"
+        android:textColor="#FFFFFFFF"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <!-- Level-up flash -->
+    <TextView
+        android:id="@+id/tvLevelUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/level_up_bg"
+        android:paddingHorizontal="28dp"
+        android:paddingVertical="14dp"
+        android:textColor="#1B1B1B"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        android:visibility="gone" />
+</FrameLayout>

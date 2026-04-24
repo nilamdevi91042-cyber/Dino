@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="36dp"
+        android:paddingBottom="32dp">
+
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="?android:textColorSecondary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="@string/app_name"
+            android:textAppearance="?attr/textAppearanceDisplaySmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/tagline"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?android:textColorSecondary" />
+
+        <!-- Stats row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/stat_card_bg"
+                android:padding="14dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvStatGames"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/stat_games"
+                    android:textColor="?android:textColorSecondary"
+                    android:textAppearance="?attr/textAppearanceLabelSmall" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="5dp"
+                android:background="@drawable/stat_card_bg"
+                android:padding="14dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvStatBest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/brand_secondary"
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/stat_best"
+                    android:textColor="?android:textColorSecondary"
+                    android:textAppearance="?attr/textAppearanceLabelSmall" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/stat_card_bg"
+                android:padding="14dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvStatPlayers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/stat_players"
+                    android:textColor="?android:textColorSecondary"
+                    android:textAppearance="?attr/textAppearanceLabelSmall" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Cards -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardPlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:cardCornerRadius="24dp"
+            app:cardBackgroundColor="@color/card_play_start"
+            app:cardElevation="0dp"
+            android:foreground="?attr/selectableItemBackground">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_play_bg"
+                android:orientation="horizontal"
+                android:padding="22dp"
+                android:gravity="center_vertical">
+                <FrameLayout
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/icon_circle_bg">
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_play" />
+                </FrameLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+                    <TextView style="@style/MenuCardTitle" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="@string/menu_play" />
+                    <TextView style="@style/MenuCardSub" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_marginTop="2dp"
+                        android:text="@string/menu_play_sub" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMultiplayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:cardCornerRadius="24dp"
+            app:cardBackgroundColor="@color/card_multi_start"
+            app:cardElevation="0dp"
+            android:foreground="?attr/selectableItemBackground">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_multi_bg"
+                android:orientation="horizontal"
+                android:padding="22dp"
+                android:gravity="center_vertical">
+                <FrameLayout android:layout_width="56dp" android:layout_height="56dp"
+                    android:background="@drawable/icon_circle_bg">
+                    <ImageView android:layout_width="32dp" android:layout_height="32dp"
+                        android:layout_gravity="center" android:src="@drawable/ic_multiplayer" />
+                </FrameLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+                    <TextView style="@style/MenuCardTitle" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="@string/menu_multiplayer" />
+                    <TextView style="@style/MenuCardSub" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_marginTop="2dp"
+                        android:text="@string/menu_multiplayer_sub" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardLeaderboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:cardCornerRadius="24dp"
+            app:cardBackgroundColor="@color/card_leaderboard_start"
+            app:cardElevation="0dp"
+            android:foreground="?attr/selectableItemBackground">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_leaderboard_bg"
+                android:orientation="horizontal"
+                android:padding="22dp"
+                android:gravity="center_vertical">
+                <FrameLayout android:layout_width="56dp" android:layout_height="56dp"
+                    android:background="@drawable/icon_circle_bg">
+                    <ImageView android:layout_width="32dp" android:layout_height="32dp"
+                        android:layout_gravity="center" android:src="@drawable/ic_leaderboard" />
+                </FrameLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+                    <TextView style="@style/MenuCardTitle" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="@string/menu_leaderboard" />
+                    <TextView style="@style/MenuCardSub" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_marginTop="2dp"
+                        android:text="@string/menu_leaderboard_sub" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:cardCornerRadius="24dp"
+            app:cardBackgroundColor="@color/card_history_start"
+            app:cardElevation="0dp"
+            android:foreground="?attr/selectableItemBackground">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_history_bg"
+                android:orientation="horizontal"
+                android:padding="22dp"
+                android:gravity="center_vertical">
+                <FrameLayout android:layout_width="56dp" android:layout_height="56dp"
+                    android:background="@drawable/icon_circle_bg">
+                    <ImageView android:layout_width="32dp" android:layout_height="32dp"
+                        android:layout_gravity="center" android:src="@drawable/ic_history" />
+                </FrameLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+                    <TextView style="@style/MenuCardTitle" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="@string/menu_history" />
+                    <TextView style="@style/MenuCardSub" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_marginTop="2dp"
+                        android:text="@string/menu_history_sub" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:cardCornerRadius="24dp"
+            app:cardBackgroundColor="@color/card_settings_start"
+            app:cardElevation="0dp"
+            android:foreground="?attr/selectableItemBackground">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/card_settings_bg"
+                android:orientation="horizontal"
+                android:padding="22dp"
+                android:gravity="center_vertical">
+                <FrameLayout android:layout_width="56dp" android:layout_height="56dp"
+                    android:background="@drawable/icon_circle_bg">
+                    <ImageView android:layout_width="32dp" android:layout_height="32dp"
+                        android:layout_gravity="center" android:src="@drawable/ic_settings" />
+                </FrameLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+                    <TextView style="@style/MenuCardTitle" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="@string/menu_settings" />
+                    <TextView style="@style/MenuCardSub" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:layout_marginTop="2dp"
+                        android:text="@string/menu_settings_sub" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

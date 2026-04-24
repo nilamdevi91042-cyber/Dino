@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <com.dinorun.game.game.MultiplayerGameView
+        android:id="@+id/gameView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- P1 HUD (top-left of left half) -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/score_chip_bg"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="8dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvP1Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFFFF"
+            android:textSize="11sp"
+            android:textAllCaps="true" />
+        <TextView
+            android:id="@+id/tvP1Score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00000"
+            android:textColor="#FFFFFFFF"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:fontFeatureSettings="tnum" />
+        <TextView
+            android:id="@+id/tvP1Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/game_over"
+            android:textColor="#FF6B6B"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- P2 HUD (top-right of right half) -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/score_chip_bg"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="8dp"
+        android:orientation="vertical"
+        android:gravity="end">
+        <TextView
+            android:id="@+id/tvP2Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFFFF"
+            android:textSize="11sp"
+            android:textAllCaps="true" />
+        <TextView
+            android:id="@+id/tvP2Score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00000"
+            android:textColor="#FFFFFFFF"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:fontFeatureSettings="tnum" />
+        <TextView
+            android:id="@+id/tvP2Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/game_over"
+            android:textColor="#FF6B6B"
+            android:textStyle="bold"
+            android:visibility="gone" />
+    </LinearLayout>
+</FrameLayout>

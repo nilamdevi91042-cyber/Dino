@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="22dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/game_over"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvNewBest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/level_up_bg"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="4dp"
+        android:text="@string/new_best"
+        android:textColor="#1B1B1B"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvFinalScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:textAppearance="?attr/textAppearanceDisplayMedium"
+        android:textColor="@color/brand_secondary"
+        android:textStyle="bold"
+        android:fontFeatureSettings="tnum" />
+
+    <View android:layout_width="match_parent" android:layout_height="1dp"
+        android:layout_marginVertical="14dp" android:background="#22000000" />
+
+    <TextView android:id="@+id/tvBest" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceBodyMedium" />
+    <TextView android:id="@+id/tvLevelReached" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="4dp" android:textAppearance="?attr/textAppearanceBodyMedium" />
+    <TextView android:id="@+id/tvObstacles" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="4dp" android:textAppearance="?attr/textAppearanceBodyMedium" />
+    <TextView android:id="@+id/tvDuration" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="4dp" android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnReplay"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/play_again"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/ic_play"
+        app:iconGravity="textStart" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLeaderboard"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:layout_marginEnd="6dp"
+            android:text="@string/see_leaderboard"
+            app:cornerRadius="14dp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHome"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:text="@string/back_home" />
+    </LinearLayout>
+</LinearLayout>

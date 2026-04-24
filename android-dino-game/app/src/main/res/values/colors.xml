@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand_primary">#5B6CFF</color>
+    <color name="brand_primary_dark">#3A4AC9</color>
+    <color name="brand_secondary">#FF9F1C</color>
+    <color name="brand_accent">#26C6DA</color>
+
+    <color name="bg_light">#F4F6FB</color>
+    <color name="bg_dark">#0F1226</color>
+    <color name="surface_light">#FFFFFF</color>
+    <color name="surface_dark">#1B1F3B</color>
+    <color name="surface_dark_2">#262B52</color>
+
+    <color name="text_primary_light">#0F1226</color>
+    <color name="text_secondary_light">#5C6177</color>
+    <color name="text_primary_dark">#F1F3FF</color>
+    <color name="text_secondary_dark">#A6ACCB</color>
+
+    <color name="card_play_start">#7C5BFF</color>
+    <color name="card_play_end">#5B6CFF</color>
+    <color name="card_multi_start">#FF6B6B</color>
+    <color name="card_multi_end">#FF9F1C</color>
+    <color name="card_leaderboard_start">#26C6DA</color>
+    <color name="card_leaderboard_end">#3A8DDE</color>
+    <color name="card_history_start">#43E97B</color>
+    <color name="card_history_end">#38C172</color>
+    <color name="card_settings_start">#A18CD1</color>
+    <color name="card_settings_end">#FBC2EB</color>
+
+    <color name="game_bg_top">#FFD89B</color>
+    <color name="game_bg_bottom">#FFF6E2</color>
+    <color name="game_ground">#5A4631</color>
+</resources>
